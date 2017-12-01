@@ -1,0 +1,387 @@
+syntax="proto3";
+
+option go_package = "goproto";
+
+message SelfUser {
+    string account = 1;
+    string nickname = 2;
+    fixed32 gender = 3;
+    string avatar = 4;
+    string signature = 5;
+    string extern = 6;
+    string customVersion = 7;
+    string data = 8;
+    int64 last_online_timestamp = 9;
+}
+
+message OtherUser {
+    string account = 1;
+    string nickname = 2;
+    fixed32 gender = 3;
+    string avatar = 4;
+    string signature = 5;
+    string extern = 6;
+    string customVersion = 7;
+    string data = 8;
+    int64 last_online_timestamp = 9;
+    string markname = 10;
+}
+
+message Friend {
+    string account = 1;
+    fixed32 flag = 2;
+    string markname = 3;
+    int64 last_online_timestamp = 4;
+}
+
+message Blacklist {
+    string account = 1;
+    fixed32 flag = 2;
+}
+
+message GroupInfo {
+    string group_id = 1;
+    string name = 2;
+    string avatar = 3;
+    string description = 4;
+    string owner_account = 5;
+    fixed32 max_user = 6;
+    string data = 7;
+    fixed32 flag = 8;
+    int64 created_timestamp = 9;
+    repeated OtherUser users = 10;
+    repeated GroupMarkname marknames = 11;
+}
+
+message AuthRequest {
+    string appId = 1;
+    string appSecret = 2;
+    string account = 3;
+    string token = 4;
+    string customVersion = 5;
+    fixed32 groupfixed32 = 6;
+}
+
+message AuthResponse {
+    fixed32 code = 1;
+    SelfUser user = 2;
+    repeated Friend friends = 3;
+    repeated GroupInfo groups = 4;
+    repeated Blacklist blacklists = 5;
+}
+
+message EchoRequest {
+    string data = 1;
+}
+
+message EchoResponse {
+    fixed32 code = 1;
+    string data = 2;
+}
+
+message KickOffNotify {
+    fixed32 code = 1;
+}
+
+message PingRequest {
+}
+
+message PingResponse {
+    fixed32 code = 1;
+}
+
+message SetProfileRequest {
+    string nickname = 1;
+    fixed32 gender = 2;
+    string avatar = 3;
+    string signature = 4;
+    string extern = 5;
+}
+
+message SetProfileResponse {
+    fixed32 code = 1;
+    SelfUser user = 2;
+}
+
+message SetFriendMarknameRequest {
+    string account = 1;
+    string markname = 2;
+}
+
+message SetFriendMarknameResponse {
+    fixed32 code = 1;
+    OtherUser user = 2;
+}
+
+message GetProfilesRequest {
+    repeated string accounts = 1;
+}
+
+message GetProfilesResponse {
+    fixed32 code = 1;
+    repeated OtherUser users = 2;
+}
+
+
+message MessageRequest {
+    string msgId = 1;
+    fixed32 msgType = 2;  
+
+    string content = 3;       
+    string from = 4;
+    string to = 5;    
+
+    uint32 file_size = 6;
+    uint32 record_time = 7;     
+    string extern = 8;
+}
+
+message MessageResponse {
+    fixed32 code = 1;
+    string msgId = 2;
+    fixed32 msgType = 3;  
+    string content = 4;    
+}
+
+message MessageNotify {
+    string a = 1;
+    fixed32 b = 2;  
+
+    string c = 3;        
+    string d = 4;
+    string f = 5;             
+
+    uint64 e = 6;
+    uint64 w = 7;
+
+    uint32 r = 8;
+    uint32 t = 9;     
+    string y = 10;
+}
+
+message MessageAck {
+    string msgId = 1;
+}
+
+message AddFriendRequest {
+    string account = 1; 
+    string desc = 2;
+}
+
+message AddFriendResponse {
+    fixed32 code = 1;
+    string account = 2;
+    fixed32 flag = 3;    
+}
+
+message AddFriendNotify {
+    OtherUser user = 1;
+    string desc = 2;
+    fixed32 flag = 3;
+    uint64 send_time = 4;
+    fixed32 is_offline = 5;
+}
+
+message AnswerFriendRequest {
+    string account = 1;
+    string desc = 2;
+    fixed32 ops = 3; // 1拒绝, 2同意, 3同意并添加
+}
+
+message AnswerFriendResponse {
+    fixed32 code = 1;
+    string account = 2;
+    fixed32 flag = 3;    
+    fixed32 ops = 4;
+}
+
+message AnswerFriendNotify {
+    OtherUser user = 1;
+    string desc = 2;
+    fixed32 flag = 3;
+    fixed32 ops = 4;
+    uint64 send_time = 5;
+    fixed32 is_offline = 6;
+}
+
+message DelFriendRequest {
+    string account = 1;
+    fixed32 ops = 2; // 1删除单向好友; 2把我也从对方列表中删除
+}
+
+message DelFriendResponse {
+    fixed32 code = 1;
+    string account = 2;
+    fixed32 flag = 3;    
+}
+
+message DelFriendNotify {
+    OtherUser user = 1;
+    fixed32 flag = 2;
+    uint64 send_time = 3;
+    fixed32 is_offline = 4;
+}
+
+message GetFriendsRequest {
+    string customVersion = 1;
+}
+
+message GetFriendsResponse {
+    fixed32 code = 1;
+    repeated Friend friends = 2;
+    string CustomVersion = 3;
+}
+
+message CreateGroupRequest {
+    string group_id = 1;
+    string name = 2;
+    string avatar = 3;
+    string description = 4;
+    fixed32 max_user = 5;
+    string data = 6;
+    fixed32 flag = 7;
+    repeated string invite_tos = 8;
+}
+
+message CreateGroupResponse {
+    fixed32 code = 1;
+    GroupInfo info = 2;
+}
+
+message GroupMarkname {
+    string account = 1;
+    string markname = 2;
+}
+
+message GetGroupInfoRequest {
+    string group_id = 1;
+}
+
+message GetGroupInfoResponse {
+    fixed32 code = 1;
+    GroupInfo info = 2;
+}
+
+message SetGroupInfoRequest {
+    string group_id = 1;
+    string name = 2;
+    string avatar = 3;
+    string description = 4;
+    string data = 5;
+}
+
+message SetGroupInfoResponse {
+    fixed32 code = 1;
+    GroupInfo info = 2;
+}
+
+message GetGroupListRequest {
+}
+
+message GetGroupListResponse {
+    fixed32 code = 1;
+    repeated string group_ids = 2; 
+}
+
+message EnterGroupRequest {
+    string group_id = 1;
+    string invite_from = 2;
+    repeated string invite_tos = 3;
+}
+
+message EnterGroupResponse {
+    fixed32 code = 1;
+    string invite_from = 2;
+    repeated string invite_tos = 3;
+    GroupInfo info = 4;
+}
+
+message EnterGroupNotify {
+    string group_id = 1;
+    OtherUser invite_from = 2;
+    repeated OtherUser invite_tos = 3;
+    GroupInfo info = 4;
+    uint64 send_time = 5;
+    fixed32 is_offline = 6;
+}
+
+message LeaveGroupRequest {
+    string group_id = 1;
+    string leave_from = 2;
+    repeated string leave_tos = 3;
+}
+
+message LeaveGroupResponse {
+    fixed32 code = 1;
+    string leave_from = 2;
+    repeated string leave_tos = 3;
+    string group_id = 4;
+}
+
+message LeaveGroupNotify {
+    string group_id = 1;
+    string leave_from = 2;
+    repeated string leave_tos = 3;
+    uint64 send_time = 4;
+    fixed32 is_offline = 5;
+}
+
+message GroupKickOffNotify {
+    string group_id = 1;
+    string account = 2;
+    uint64 send_time = 3;
+    fixed32 is_offline = 4;
+}
+
+message SetGroupMarknameRequest {
+    string group_id = 1;
+    string markname = 2;
+}
+
+message SetGroupMarknameResponse {
+    fixed32 code = 1;
+    string group_id = 2;
+    string markname = 3;
+}
+
+message AddBlacklistRequest {
+    string account = 1; 
+}
+
+message AddBlacklistResponse {
+    fixed32 code = 1;
+    string account = 2;
+    fixed32 flag = 3;    
+}
+
+message AddBlacklistNotify {
+    OtherUser user = 1;
+    fixed32 flag = 2;
+    uint64 send_time = 3;
+    fixed32 is_offline = 4;
+}
+
+message DelBlacklistRequest {
+    string account = 1;
+}
+
+message DelBlacklistResponse {
+    fixed32 code = 1;
+    string account = 2;
+    fixed32 flag = 3;    
+}
+
+message DelBlacklistNotify {
+    OtherUser user = 1;
+    fixed32 flag = 2;
+    uint64 send_time = 3;
+    fixed32 is_offline = 4;
+}
+
+message GetBlacklistsRequest {
+}
+
+message GetBlacklistsResponse {
+    fixed32 code = 1;
+    repeated Blacklist blacklists = 2;
+}
